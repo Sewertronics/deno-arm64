@@ -22,7 +22,9 @@ jobs:
         run: |
           export VERSION="${{ github.event.inputs.version || github.ref }}"
           VERSION="${VERSION#refs/tags/}"
+          echo $VERSION
           response=$(curl -s -H "Accept: application/json" https://api.github.com/repos/lukechannings/docker-deno/releases)
+          echo $response
           release=$(echo $response | jq ".[]|select(.tag_name==\"${VERSION}\")")
           echo "::set-output name=version::${VERSION}"
           echo "::set-output name=upload_url::$(echo $release | jq -r ".upload_url")"
